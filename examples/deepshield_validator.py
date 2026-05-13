@@ -19,7 +19,7 @@ def deep_shield_validator(scraped_text):
     threats_found = []
     
     for pattern in danger_patterns:
-        if re.search(pattern, scraped_text):
+        if isinstance(scraped_text, str) and re.search(pattern, scraped_text):
             threats_found.append(pattern)
             
     if threats_found:
