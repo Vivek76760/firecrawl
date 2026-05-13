@@ -15,14 +15,14 @@ def firecrawl_financial_extractor(html_text):
 
     # 1. Logic for Currency Detection (INR/USD)
     text_lower = html_text.lower()
-    if "₹" in html_text or "rs" in text_lower:
+    if "₹" in html_text or re.search(r'\brs\.?\b', text_lower):
         extracted_data["currency"] = "INR"
     elif "$" in html_text:
         extracted_data["currency"] = "USD"
 
     # 2. Logic for Amount Extraction (Handles commas like 60,000)
     # This regex looks for digits and optional commas
-    raw_numbers = re.findall(r'\d+(?:,\d+)?', html_text)
+    raw_numbers = re.findall(r'\d+(?:,\d+)*', html_text)
     if raw_numbers:
         # Remove commas and convert to integers to find the largest value
         clean_numbers = [int(num.replace(',', '')) for num in raw_numbers]
